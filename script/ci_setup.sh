@@ -8,9 +8,16 @@ pip3 install -U conan
 
 conan profile new default --detect
 
-if [[ ${CC} == gcc* ]]; then
+
+if [[ "${CXX}" == clang* ]]
+then
+    export CXXFLAGS="-stdlib=libc++"
+    conan profile update settings.compiler.libcxx=libc++ default
+else
     conan profile update settings.compiler.libcxx=libstdc++11 default
 fi
+
+conan profile update settings.compiler.cppstd=17 default
 
 cp script/settings.yml ~/.conan/
 
