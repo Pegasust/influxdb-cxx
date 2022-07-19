@@ -23,5 +23,5 @@ conan install \
     -o influxdb-cxx:system=True \
     -o influxdb-cxx:tests=True \
     -s compiler.cppstd=17 \
-    --build=missing . \
+    --build=missing \
     .
