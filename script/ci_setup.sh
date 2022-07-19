@@ -14,4 +14,4 @@ fi
 
 cp script/settings.yml ~/.conan/
 
-conan install -o influxdb-cxx:system=True -o influxdb-cxx:tests=True .
+conan install -o influxdb-cxx:system=True -o influxdb-cxx:tests=True --build=missing .
