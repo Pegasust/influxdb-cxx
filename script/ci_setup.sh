@@ -17,8 +17,11 @@ else
     conan profile update settings.compiler.libcxx=libstdc++11 default
 fi
 
-conan profile update settings.compiler.cppstd=17 default
-
 cp script/settings.yml ~/.conan/
 
-conan install -o influxdb-cxx:system=True -o influxdb-cxx:tests=True --build=missing .
+conan install \
+    -o influxdb-cxx:system=True \
+    -o influxdb-cxx:tests=True \
+    -s compiler.cppstd=17 \
+    --build=missing . \
+    .
