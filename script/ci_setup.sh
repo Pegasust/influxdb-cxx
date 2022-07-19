@@ -17,8 +17,6 @@ else
     conan profile update settings.compiler.libcxx=libstdc++11 default
 fi
 
-conan profile update settings.compiler.cppstd=17 default
-
 cp script/settings.yml ~/.conan/
 
 conan install \
@@ -27,7 +25,3 @@ conan install \
     -s compiler.cppstd=17 \
     --build=missing \
     .
-
-echo "======================================="
-conan profile show default
-echo "======================================="
