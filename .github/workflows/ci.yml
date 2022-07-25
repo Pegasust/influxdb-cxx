@@ -32,7 +32,7 @@ jobs:
         run: apt-get install -y libboost-system-dev
       - name: Build
         run: |
-          script/ci_build.sh -DCMAKE_TOOLCHAIN_FILE=./build/conan_paths.cmake -DINFLUXCXX_WITH_BOOST=${{ matrix.boost }}
+          script/ci_build.sh -DINFLUXCXX_WITH_BOOST=${{ matrix.boost }}
           cmake --build build --target unittest
       - name: Check deployment as cmake subdirectory
         run: script/ci_testdeploy.sh -DINFLUXCXX_AS_SUBDIR=ON -DINFLUXCXX_WITH_BOOST=${{ matrix.boost }}
