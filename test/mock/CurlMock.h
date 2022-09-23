@@ -51,6 +51,8 @@ namespace influxdb::test
         MAKE_MOCK3(curl_easy_getinfo_, CURLcode(CURL*, CURLINFO, long*));
         MAKE_MOCK3(curl_easy_escape, char*(CURL*, const char*, int) );
         MAKE_MOCK1(curl_free, void(void*));
+        MAKE_MOCK2(curl_slist_append, curl_slist*(curl_slist*, const char*));
+        MAKE_MOCK1(curl_slist_free_all, void(curl_slist*));
     };
 
     extern CurlMock curlMock;

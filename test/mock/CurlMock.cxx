@@ -125,3 +125,13 @@ CURLcode curl_easy_getinfo(CURL* curl, CURLINFO info, ...)
     FAIL("Option unsupported by mock: " + std::to_string(info));
     return CURLE_UNKNOWN_OPTION;
 }
+
+curl_slist* curl_slist_append(curl_slist* list, const char* str)
+{
+    return influxdb::test::curlMock.curl_slist_append(list, str);
+}
+
+void curl_slist_free_all(curl_slist* list) 
+{
+    influxdb::test::curlMock.curl_slist_free_all(list);
+}

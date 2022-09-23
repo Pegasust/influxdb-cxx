@@ -1,0 +1,22 @@
+services:
+  influxdb-1:
+    image: influxdb:1.8-alpine
+    ports:
+    - 8087:8086
+    environment:
+    - INFLUXDB_DB=test1
+    - INFLUXDB_HTTP_AUTH_ENABLED=true
+    - INFLUXDB_ADMIN_USER=root
+    - INFLUXDB_ADMIN_PASSWORD=password
+  influxdb-2:
+    image: influxdb:2.4-alpine
+    ports:
+    - 8086:8086
+    environment:
+    - DOCKER_INFLUXDB_INIT_MODE=setup
+    - DOCKER_INFLUXDB_INIT_USERNAME=root
+    - DOCKER_INFLUXDB_INIT_PASSWORD=password
+    - DOCKER_INFLUXDB_INIT_ORG=pegasust
+    - DOCKER_INFLUXDB_INIT_BUCKET=test2
+    - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=influxdb2testtoken
+
