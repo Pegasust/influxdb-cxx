@@ -3,3 +3,7 @@
 /cmake-build-debug
 /cmake-build-release
 /.idea
+cmake/*
+!cmake/conan.lock
+compile_commands.json
+
