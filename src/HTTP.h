@@ -62,6 +62,10 @@ namespace influxdb::transports
         /// \param auth <username>:<password>
         void enableBasicAuth(const std::string& auth);
 
+        /// Enable token-based auth for V2 connection
+        /// \param token The token generated for our connection
+        void enableV2Auth(const std::string& token);
+
         /// Get the database name managed by this transport
         [[nodiscard]] std::string databaseName() const;
 

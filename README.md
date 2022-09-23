@@ -121,3 +121,16 @@ List of supported transport is following:
 
 
 <sup>i)</sup> boost is needed to support queries.
+
+- Only HTTP supports `createDatabase*` and `query`
+
+## V2 support
+
+- This library is supports InfluxQL queries and writing using Point protocol
+- Many InfluxDB v2.x has 
+[backward compatibility](https://docs.influxdata.com/influxdb/v2.0/api/v1-compatibility/)
+with v1
+- `InfluxDBFactory.GetV2(<HTTP URI>)` will put password (or username if no
+password is given) as authorization token. Please use `Get` on InfluxDB v2
+if using auth of V1 (not to be confused with V2 user account)
+

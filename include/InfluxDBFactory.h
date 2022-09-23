@@ -57,6 +57,12 @@ namespace influxdb
         /// \param proxy   Proxy
         /// \throw InfluxDBException     if unrecognised backend, missing protocol or unsupported proxy
         static std::unique_ptr<InfluxDB> Get(const std::string& url, Proxy proxy);
+        /// InfluxDB factory
+        /// Provides InfluxDB instance with given transport and uses password
+        /// or username (if no password given) as authorization token
+        /// \param url URL defining transport details
+        /// \throw InfluxDBException if unrecognized backend, missing protocol
+        static std::unique_ptr<InfluxDB> GetV2(const std::string& url);
 
     private:
         ///\return  backend based on provided URL

@@ -48,12 +48,22 @@ namespace influxdb
             }
             return transport;
         }
-
+        std::unique_ptr<Transport> withHttpTransportV2(const http::url& uri)
+        {
+            auto transport = std::make_unique<transports::HTTP>(uri.url);
+            if (!uri.user.empty()) {
+                transport->enableV2Auth(uri.password.empty()? 
+                                        uri.user: uri.password);
+            }
+            return transport;
+        }
+        using TransportFactory = 
+            std::function<std::unique_ptr<Transport>(const http::url&)>;
     }
 
     std::unique_ptr<Transport> InfluxDBFactory::GetTransport(const std::string& url)
     {
-        static const std::map<std::string, std::function<std::unique_ptr<Transport>(const http::url&)>> map = {
+        static const std::map<std::string, internal::TransportFactory> map = {
             {"udp", internal::withUdpTransport},
             {"http", internal::withHttpTransport},
             {"https", internal::withHttpTransport},
@@ -87,5 +97,25 @@ namespace influxdb
         transport->setProxy(proxy);
         return std::make_unique<InfluxDB>(std::move(transport));
     }
+    std::unique_ptr<InfluxDB> InfluxDBFactory::GetV2(const std::string& url)
+    {
+        static const std::map<std::string, internal::TransportFactory> map = {
+            {"http", internal::withHttpTransportV2},
+            {"https", internal::withHttpTransportV2},
+        };
+        auto urlCopy = url;
+        http::url parsedUrl = http::ParseHttpUrl(urlCopy);
+        if (parsedUrl.protocol.empty())
+        {
+            throw InfluxDBException(__func__, "Ill-formed URI");
+        }
 
+        const auto iterator = map.find(parsedUrl.protocol);
+        if (iterator == map.end())
+        {
+            throw InfluxDBException(__func__, "Unrecognized backend " + parsedUrl.protocol);
+        }
+
+        return std::make_unique<InfluxDB>(iterator->second(parsedUrl));
+    }
 } // namespace influxdb

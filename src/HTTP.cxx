@@ -27,6 +27,8 @@
 
 #include "HTTP.h"
 #include "InfluxDBException.h"
+#include <curl/curl.h>
+#include <curl/easy.h>
 
 
 namespace influxdb::transports
@@ -155,6 +157,20 @@ namespace influxdb::transports
         curl_easy_setopt(writeHandle, CURLOPT_USERPWD, auth.c_str());
         curl_easy_setopt(readHandle, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_easy_setopt(readHandle, CURLOPT_USERPWD, auth.c_str());
+    }
+    struct curl_slist* v2AuthHeaders(const std::string& token, 
+                                     struct curl_slist* existing_slist=nullptr)
+    {
+        std::string authHeader = "Authorization: Token " + token;
+        existing_slist = curl_slist_append(existing_slist, authHeader.c_str());
+        return existing_slist;
+    }
+    void HTTP::enableV2Auth(const std::string &token)
+    {
+        auto headers = v2AuthHeaders(token);
+        curl_easy_setopt(writeHandle, CURLOPT_HTTPHEADER, headers);
+        curl_easy_setopt(readHandle, CURLOPT_HTTPHEADER, headers);
+        curl_slist_free_all(headers);
     }
 
     void HTTP::send(std::string&& lineprotocol)
